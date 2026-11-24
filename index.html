@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Terracore Fresh Ltd · Operations</title>
+<title>Terracore Fresh Ltd · Unified Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -13,7 +13,7 @@
 
 <div id="loginGate">
   <form class="login-card" id="loginForm">
-    <div class="login-brand"><div class="brand-mark">T</div><div><h1>Terracore Fresh Ltd</h1><p>Bagamoyo · Operations</p></div></div>
+    <div class="login-brand"><div class="brand-mark">T</div><div><h1>Terracore Fresh Ltd</h1><p>Unified Operations & Finance</p></div></div>
     <h2>Staff sign in</h2>
     <div class="field"><label>Name</label><input type="text" id="loginName" placeholder="Your name" required></div>
     <div class="field"><label>Role</label>
@@ -30,11 +30,9 @@
     <div class="topbar-inner">
       <div class="tb-brand"><div class="brand-mark">T</div><div><h1>Terracore</h1></div></div>
       <div class="tb-right">
+        <span class="chip" id="healthChip">⚪ Loading…</span>
         <span class="chip" id="chipWeather">🌤️ <span id="weatherChipText">Loading…</span></span>
-        <div class="tb-user">
-          <div class="avatar" id="userAvatar">M</div>
-          <button class="logout-btn" id="logoutBtn">⏻</button>
-        </div>
+        <div class="tb-user"><div class="avatar" id="userAvatar">M</div><button class="logout-btn" id="logoutBtn">⏻</button></div>
       </div>
     </div>
   </div>
@@ -42,50 +40,46 @@
   <div class="tabs">
     <div class="tabs-inner" id="tabsInner">
       <button class="tab active" data-tab="dashboard">📊 Dashboard</button>
-      <button class="tab" data-tab="daily">📅 Calendar Log</button>
-      <button class="tab" data-tab="weekly">📈 Weekly</button>
-      <button class="tab" data-tab="monthly">🗓️ Monthly</button>
-      <button class="tab" data-tab="finance">💰 Finance</button>
-      <button class="tab" data-tab="tasks">📋 Tasks</button>
-      <button class="tab" data-tab="setup">⚙️ Settings</button>
+      <button class="tab" data-tab="daily">📅 Farm Log</button>
+      <button class="tab" data-tab="cashbook">💰 Cashbook</button>
+      <button class="tab" data-tab="shareholders">👥 Shareholders</button>
+      <button class="tab" data-tab="setup">⚙️ Setup</button>
     </div>
   </div>
 
   <main>
     <div class="container">
-      <!-- DASHBOARD (eeh.xlsx Summary) -->
+      <!-- DASHBOARD -->
       <section class="page active" id="page-dashboard">
-        <div class="alert-banner ok" id="alertBanner">
-          <span class="ico">✅</span><div><strong>All clear:</strong> Routine day.</div>
+        <div class="alert-banner ok" id="healthBanner"><span class="ico">⏳</span><div>Calculating business health…</div></div>
+
+        <!-- FINANCE KPIs (eeh.xlsx) -->
+        <div class="kpi-grid">
+          <div class="kpi-card" id="kpiCash"><div class="lbl">CASH IN HAND</div><div class="val">0</div><div class="sub" id="kpiCashSub">Lowest: 0</div></div>
+          <div class="kpi-card" id="kpiSales"><div class="lbl">SALES TO DATE</div><div class="val">0</div><div class="sub" id="kpiSalesSub">Last 30d: 0</div></div>
+          <div class="kpi-card" id="kpiSpend"><div class="lbl">SPEND TO DATE</div><div class="val">0</div><div class="sub" id="kpiSpendSub">Running: 0</div></div>
+          <div class="kpi-card" id="kpiNet"><div class="lbl">NET RESULT</div><div class="val">0</div><div class="sub" id="kpiNetSub">Plan: 0</div></div>
         </div>
 
-        <!-- Right Now Panel -->
-        <div class="dash-panel">
-          <div class="dp-header">Right Now</div>
-          <div class="dp-grid">
-            <div><span class="lbl">Today</span><span class="val" id="rnToday">—</span></div>
-            <div><span class="lbl">Season Day</span><span class="val" id="rnSeason">—</span></div>
-            <div><span class="lbl">Climate Phase</span><span class="val" id="rnPhase">—</span></div>
-            <div><span class="lbl">Latest Observed</span><span class="val" id="rnLatest">—</span></div>
+        <div class="dash-panels">
+          <!-- RIGHT NOW (bmf.xlsx) -->
+          <div class="panel">
+            <div class="panel-h">RIGHT NOW (Climate & Ops)</div>
+            <div class="panel-body">
+              <div class="rw-row"><span>Today</span><strong id="rnDate">—</strong></div>
+              <div class="rw-row"><span>Season Day</span><strong id="rnSeason">—</strong></div>
+              <div class="rw-row"><span>Climate Phase</span><strong id="rnPhase">—</strong></div>
+              <div class="rw-row"><span>Normal (High / Rain)</span><strong id="rnNormal">—</strong></div>
+              <div class="dp-action" id="rnAction" style="margin-top:10px;font-size:.8rem">—</div>
+            </div>
           </div>
-          <div class="dp-action"><span id="rnAction">Loading…</span></div>
-        </div>
 
-        <!-- Season to Date Panel -->
-        <div class="dash-panel">
-          <div class="dp-header">Season to Date</div>
-          <div class="dp-grid" id="seasonGrid">
-            <!-- JS populates this -->
-          </div>
-        </div>
-
-        <!-- Focus Panel -->
-        <div class="dash-panel">
-          <div class="dp-header">Focus for this Phase</div>
-          <div class="focus-grid">
-            <div class="focus-card"><div class="f-lbl">Daily</div><div class="f-txt" id="focusDaily">—</div></div>
-            <div class="focus-card weekly"><div class="f-lbl">Weekly</div><div class="f-txt" id="focusWeekly">—</div></div>
-            <div class="focus-card monthly"><div class="f-lbl">Monthly</div><div class="f-txt" id="focusMonthly">—</div></div>
+          <!-- SEASON TO DATE (bmf.xlsx) -->
+          <div class="panel">
+            <div class="panel-h">SEASON TO DATE (Ops)</div>
+            <div class="panel-body" id="seasonGrid">
+              <!-- JS populates -->
+            </div>
           </div>
         </div>
 
@@ -95,10 +89,10 @@
         </div>
       </section>
 
-      <!-- CALENDAR LOG -->
+      <!-- FARM LOG (bmf.xlsx) -->
       <section class="page" id="page-daily">
-        <div class="section-h"><div><h2>Calendar Log</h2><p>Tap day to log/edit.</p></div>
-          <button class="btn btn-primary btn-sm" onclick="openQuickLog()">+ Add</button></div>
+        <div class="section-h"><div><h2>Farm Operations Log</h2><p>Tap a day to log weather, pumps, and harvest.</p></div>
+          <button class="btn btn-primary btn-sm" onclick="openQuickLog()">+ Today</button></div>
         <div class="card">
           <div class="cal-header">
             <button class="btn btn-outline btn-sm" onclick="changeMonth(-1)">←</button>
@@ -106,98 +100,116 @@
             <button class="btn btn-outline btn-sm" onclick="changeMonth(1)">→</button>
           </div>
           <div class="cal-grid" id="calendarGrid"></div>
-          <div class="cal-legend">
-            <span>💧 Irrig</span> <span>⚠️ Disease</span> <span>🚰 Water</span> <span>⚡ Elec</span>
-          </div>
         </div>
         <div class="card mt-2" style="padding:0;overflow:hidden">
-          <div class="table-wrap" style="border:none"><table id="dailyTable"><thead><tr><th>Date</th><th>Rain</th><th>Irr h</th><th>Harvest</th><th>Action</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="table-wrap" style="border:none"><table id="dailyTable"><thead><tr><th>Date</th><th>Rain</th><th>Pump h</th><th>Harvest</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div>
         </div>
       </section>
 
-      <!-- WEEKLY -->
-      <section class="page" id="page-weekly">
-        <div class="section-h"><div><h2>Weekly Log</h2></div></div>
-        <div class="card" style="padding:0;overflow:hidden"><div class="table-wrap" style="border:none"><table id="weeklyTable"><thead><tr><th>Week</th><th>Days</th><th>Rain</th><th>Irrig</th><th>Harvest</th></tr></thead><tbody></tbody></table></div></div>
+      <!-- CASHBOOK (eeh.xlsx) -->
+      <section class="page" id="page-cashbook">
+        <div class="section-h"><div><h2>Cashbook</h2><p>Record all income, expenses, and capital.</p></div>
+          <button class="btn btn-primary btn-sm" onclick="openCashbookModal()">+ Entry</button></div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="table-wrap" style="border:none">
+            <table class="main-table" id="cashbookTable">
+              <thead><tr><th>Date</th><th>Category</th><th>Desc</th><th>Shareholder</th><th>Income</th><th>Expense</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
-      <!-- MONTHLY -->
-      <section class="page" id="page-monthly">
-        <div class="section-h"><div><h2>Monthly Log</h2></div></div>
-        <div class="card" style="padding:0;overflow:hidden"><div class="table-wrap" style="border:none"><table id="monthlyTable"><thead><tr><th>Month</th><th>Normal Rain</th><th>Actual Rain</th><th>Avg Temp</th><th>Days</th></tr></thead><tbody></tbody></table></div></div>
+      <!-- SHAREHOLDERS (eeh.xlsx) -->
+      <section class="page" id="page-shareholders">
+        <div class="section-h"><div><h2>Shareholders</h2><p>Profit splits and capital tracking.</p></div></div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="table-wrap" style="border:none">
+            <table class="main-table" id="shareholderTable">
+              <thead><tr><th>Name</th><th>Share %</th><th>Result Share</th><th>Injected</th><th>Paid Out</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
-      <!-- FINANCE -->
-      <section class="page" id="page-finance">
-        <div class="section-h"><div><h2>Finance</h2></div>
-          <div class="actions"><button class="btn btn-primary btn-sm" onclick="openFinanceModal('income')">+ Income</button><button class="btn btn-outline btn-sm" onclick="openFinanceModal('expense')">+ Expense</button></div></div>
-        <div class="card" style="padding:0;overflow:hidden"><div class="table-wrap" style="border:none"><table id="financeTable"><thead><tr><th>Date</th><th>Type</th><th>Desc</th><th>Amount</th><th></th></tr></thead><tbody></tbody></table></div></div>
-      </section>
-
-      <!-- TASKS -->
-      <section class="page" id="page-tasks"><div class="section-h"><div><h2>Task Library</h2></div></div><div id="tasksList"></div></section>
-
-      <!-- SETTINGS -->
+      <!-- SETUP -->
       <section class="page" id="page-setup">
-        <div class="section-h"><div><h2>Settings</h2></div></div>
-        <div class="card"><form id="setupForm" class="form-grid">
-            <div class="form-field full"><label>Farm Name</label><input type="text" name="farmName"></div>
+        <div class="section-h"><div><h2>System Setup</h2><p>Climate, Pump, and Financial Planning.</p></div></div>
+        
+        <div class="card">
+          <div class="card-h"><h3>🌱 Farm & Climate (bmf)</h3></div>
+          <form id="farmSetupForm" class="form-grid">
+            <div class="form-field"><label>Farm Name</label><input type="text" name="farmName"></div>
             <div class="form-field"><label>Season Start</label><input type="date" name="seasonStart"></div>
-            <div class="form-field"><label>PIN</label><input type="text" name="pin" inputmode="numeric"></div>
-            <div class="form-field"><label>Heat Stress °C</label><input type="number" name="thHeat"></div>
-            <div class="form-field"><label>Heavy Rain mm</label><input type="number" name="thRain"></div>
-            <div class="form-field"><label>Harvest Price (TZS/kg)</label><input type="number" name="priceKg"></div>
-            <div class="form-field"><label>Labour Rate (TZS/hr)</label><input type="number" name="rateHr"></div>
-            <div class="form-field full" style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
-              <button type="button" class="btn btn-outline" onclick="resetAll()">Reset</button>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </form></div>
-        <div class="card mt-2"><button class="btn btn-outline" onclick="exportJSON()">⬇ Backup Data</button><button class="btn btn-outline" onclick="document.getElementById('importFile').click()" style="margin-left:10px">⬆ Restore</button><input type="file" id="importFile" accept=".json" style="display:none"></div>
+            <div class="form-field"><label>Pump Flow (m3/hr)</label><input type="number" name="pumpFlow"></div>
+            <div class="form-field"><label>Pump Power (kW)</label><input type="number" name="pumpPower"></div>
+            <div class="form-field"><label>Electricity (TZS/kWh)</label><input type="number" name="elecRate"></div>
+            <div class="form-field"><label>PIN</label><input type="text" name="pin"></div>
+            <div class="form-field full" style="text-align:right"><button type="submit" class="btn btn-primary btn-sm">Save Farm Setup</button></div>
+          </form>
+        </div>
+
+        <div class="card mt-2">
+          <div class="card-h"><h3>💰 Financial Plan (eeh)</h3></div>
+          <form id="finSetupForm" class="form-grid">
+            <div class="form-field"><label>Start-up Capital (TZS)</label><input type="number" name="startCapital"></div>
+            <div class="form-field"><label>Look-back Window (Days)</label><input type="number" name="lookback"></div>
+            <div class="form-field"><label>Plan Sales (to date)</label><input type="number" name="planSales"></div>
+            <div class="form-field"><label>Plan Spend (to date)</label><input type="number" name="planSpend"></div>
+            <div class="form-field full"><label>Shareholders (Name|Percent, e.g. Samwel|60, Abdul|40)</label><input type="text" name="shareholders"></div>
+            <div class="form-field full" style="text-align:right"><button type="submit" class="btn btn-primary btn-sm">Save Finance Setup</button></div>
+          </form>
+        </div>
       </section>
     </div>
   </main>
 </div>
 
-<!-- MODALS -->
+<!-- FARM LOG MODAL -->
 <div class="modal-bg" id="logModal">
   <form class="modal" id="logForm">
-    <div class="modal-h"><h3 id="logModalTitle">Log Entry</h3><button type="button" class="close" onclick="closeModal('logModal')">×</button></div>
+    <div class="modal-h"><h3 id="logModalTitle">Farm Log</h3><button type="button" class="close" onclick="closeModal('logModal')">×</button></div>
     <div class="modal-b">
       <div class="form-grid">
         <div class="form-field"><label>Date</label><input type="date" name="date" id="logDate" required></div>
-        <div class="form-field"><label>Block</label><input type="text" name="block" placeholder="e.g. Block A"></div>
+        <div class="form-field"><label>Weather</label>
+          <select name="weather"><option value="">-- Select --</option><option value="Sunny">Sunny</option><option value="Cloudy">Cloudy</option><option value="Rainy">Rainy</option></select>
+        </div>
         <div class="form-field"><label>Rain (mm)</label><input type="number" step="0.1" name="rain"></div>
-        <div class="form-field"><label>Max Temp (°C)</label><input type="number" step="0.1" name="tmax"></div>
-        <div class="form-field"><label>Humidity (%)</label><input type="number" step="1" name="humidity"></div>
-        <div class="form-field"><label>Irrigation (hrs)</label><input type="number" step="0.1" name="irrigHrs"></div>
-        <div class="form-field"><label>Water (L)</label><input type="number" step="1" name="waterL"></div>
-        <div class="form-field"><label>Electric (kWh)</label><input type="number" step="0.1" name="electricKwh"></div>
+        <div class="form-field"><label>Pump Hours</label><input type="number" step="0.1" name="pumpHours"></div>
         <div class="form-field"><label>Harvest (kg)</label><input type="number" step="0.1" name="harvest"></div>
-        <div class="form-field"><label>Labour Hours</label><input type="number" step="0.5" name="labourHrs"></div>
-        <div class="form-field full"><label>Disease/Pest Level</label><input type="text" name="disease" placeholder="e.g. Low blight, High aphids"></div>
-        <div class="form-field full"><label>Notes / Field Work</label><textarea name="notes"></textarea></div>
+        <div class="form-field"><label>Initials (closes day)</label><input type="text" name="initials" placeholder="e.g. AM"></div>
+        <div class="form-field full"><label>Notes</label><textarea name="notes"></textarea></div>
       </div>
     </div>
-    <div class="modal-f"><button type="button" class="btn btn-outline" onclick="closeModal('logModal')">Cancel</button><button type="submit" class="btn btn-primary" id="logSubmitBtn">Save</button></div>
+    <div class="modal-f"><button type="button" class="btn btn-outline" onclick="closeModal('logModal')">Cancel</button><button type="submit" class="btn btn-primary">Save Log</button></div>
   </form>
 </div>
 
-<div class="modal-bg" id="finModal">
-  <form class="modal" id="finForm">
-    <div class="modal-h"><h3 id="finModalTitle">New Entry</h3><button type="button" class="close" onclick="closeModal('finModal')">×</button></div>
+<!-- CASHBOOK MODAL -->
+<div class="modal-bg" id="cashModal">
+  <form class="modal" id="cashForm">
+    <div class="modal-h"><h3 id="cashModalTitle">New Cashbook Entry</h3><button type="button" class="close" onclick="closeModal('cashModal')">×</button></div>
     <div class="modal-b">
-      <input type="hidden" name="type" id="finType"><input type="hidden" name="id" id="finId">
+      <input type="hidden" name="id" id="cashId">
       <div class="form-grid">
-        <div class="form-field"><label>Date</label><input type="date" name="date" id="finDate" required></div>
-        <div class="form-field"><label>Category</label><select name="category" id="finCategory"></select></div>
+        <div class="form-field"><label>Date</label><input type="date" name="date" id="cashDate" required></div>
+        <div class="form-field"><label>Type</label>
+          <select name="type" id="cashType" onchange="updateCashCategories()">
+            <option value="income">Income</option><option value="expense">Expense</option><option value="capital">Capital Injection/Payout</option>
+          </select>
+        </div>
+        <div class="form-field"><label>Category</label><select name="category" id="cashCategory"></select></div>
         <div class="form-field"><label>Amount (TZS)</label><input type="number" name="amount" required></div>
         <div class="form-field full"><label>Description</label><input type="text" name="desc"></div>
+        <div class="form-field full" id="shareholderField" style="display:none"><label>Shareholder</label><select name="shareholder" id="cashShareholder"></select></div>
       </div>
     </div>
-    <div class="modal-f"><button type="button" class="btn btn-outline" onclick="closeModal('finModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    <div class="modal-f"><button type="button" class="btn btn-outline" onclick="closeModal('cashModal')">Cancel</button><button type="submit" class="btn btn-primary">Save Entry</button></div>
   </form>
 </div>
+
 <div id="toast"></div>
 <script src="app-core.js"></script><script src="app-live.js"></script><script src="app-tables.js"></script><script src="app-ops.js"></script><script src="app-forms.js"></script>
 </body>
